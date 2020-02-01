@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session
+from flask import Flask, request, redirect, render_template, session, send_file
 import sqlite3, os
 
 app = Flask(__name__)
@@ -17,9 +17,14 @@ else:
 	tempdb = "tempdb"
 	commentdb = "commentdb"
 
+
 @app.route('/')
 def pageFront():
-	return render_template('home.html')
+	return render_template('login.html')
+	
+@app.route('/select')
+def pageSelect():
+	return render_template('select.html')	
 	
 # # # #
 # Problem: Default credentials
@@ -35,9 +40,9 @@ def pageBrokenauth1Post():
 	password = request.form['password']
 	
 	if username == 'Administrator' and password == 'admin':
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='brokenauth1')
 	else:
-		return render_template('login.html', page='brokenauth1', incorrect=True)
+		return render_template('login.html', page='brokenauth1', incorrect=True, username=username, password=password)
 
 # # # #
 # Problem: Common credentials
@@ -53,7 +58,7 @@ def pageBrokenauth2Post():
 	password = request.form['password']
 	
 	if username == 'Administrator' and password == '1qaz2wsx':
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='brokenauth2')
 	else:
 		return render_template('login.html', page='brokenauth2', incorrect=True)
 
@@ -78,7 +83,11 @@ def pageSecmisPost():
 
 @app.route('/secmis/admin')
 def pageSecmisAdmin():
-	return render_template('inside.html', admin=True)
+	return render_template('inside.html', admin=True, page='secmis')
+	
+@app.route('/secmis/admin/')
+def pageSecmisAdmin2():
+	return render_template('inside.html', admin=True, page='secmis')	
 
 # # # #
 # Problem: SQL Injection
@@ -105,9 +114,9 @@ def pageInjectPost():
 	conn.commit()
 	c.close()
 	if result is not None:
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='inject')
 	else:
-		return render_template('login.html', page='inject', incorrect=True, sqlline=sql)
+		return render_template('login.html', page='inject', incorrect=True, sqlline=sql, username=username, password=password)
 
 # # # #
 # Problem: Broken Access Control
@@ -125,7 +134,7 @@ def pageBrokenaccessPost():
 	if username == 'user' and password == 'user':
 		return redirect("/brokenaccess/loggedin/user/6510", code=302)
 	else:
-		return render_template('login.html', page='brokenauth2', incorrect=True)
+		return render_template('login.html', page='brokenaccess', incorrect=True)
 		
 # # # #
 # Problem: Unencrypted sensitive data in cookies
@@ -135,37 +144,29 @@ def pageBrokenaccessPost():
 def pageCookies():
 	session['loggedin'] = "False"
 	return render_template('login.html', page='cookies')
-
+	
 @app.route('/cookies', methods = ['POST'])
 def pageCookiesPost():
 
 	if session['loggedin'] == "True":
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='cookies')
 	else:
-		return render_template('login.html', page='brokenauth2', incorrect=True)
+		return render_template('login.html', page='cookies', incorrect=True)
 		
 @app.route('/brokenaccess/loggedin/user/<userid>')
 def pageBrokenaccessLoggedin(userid):
 	if userid == "0":
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='brokenaccess')
 	elif userid == "6510":
-		return render_template('inside.html', admin=False)
+		return render_template('inside.html', admin=False, page='brokenaccess')
 	else:
 		return render_template('minimal.html', page='brokenaccess', content='Error: Incorrect user')
 		
-@app.route('/xss')
+@app.route('/xsscontact')
 def pageXss():
-	conn = sqlite3.connect(commentdb)
-	c = conn.cursor()
-	c.execute('CREATE TABLE IF NOT EXISTS comments("comment" TEXT, "name" TEXT)')
-	conn.commit()
-	sql = '''SELECT comment,name FROM comments'''
-	c.execute(sql)
-	result = c.fetchall()
-	c.close()
-	return render_template('feedback.html')
+	return render_template('contact.html', page='xsscontact')
 	
-@app.route('/xss', methods = ['POST'])
+@app.route('/xsscontact', methods = ['POST'])
 def pageXssPost():	
 	comment = request.form['comment']
 	name = request.form['name']
@@ -176,12 +177,12 @@ def pageXssPost():
 	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', (comment,name))
 	conn.commit()
 	c.close()
-	return render_template('feedback.html', sent=True)	
+	return render_template('contact.html', sent=True, page='xsscontact')	
 	
-@app.route('/xssvictim')
-def pageXssvictim():
+@app.route('/xssadmin')
+def pageXssadmin():
 	if session.get('loggedin') != "True":
-		return render_template('feedbacklogin.html', page='xssvictim', incorrect=True)
+		return render_template('login.html', page='xssadmin')
 	else:
 		conn = sqlite3.connect(commentdb)
 		c = conn.cursor()
@@ -191,7 +192,7 @@ def pageXssvictim():
 		c.execute(sql)
 		result = c.fetchall()
 		c.close()
-		return render_template('feedbackadmin.html', dbresult=result)
+		return render_template('inside.html', comments=result, page='xssadmin', admin=True)
 		
 @app.route('/brokensession')
 def pageBrokensession():
@@ -199,12 +200,12 @@ def pageBrokensession():
 		session['loggedin'] = "False"
 		return render_template('login.html', page='brokensession')
 	else:
-		return render_template('inside.html', admin=True)
+		return render_template('inside.html', admin=True, page='brokensession')
 
-@app.route('/xssvictim/removefeedback')
-def pageXssvictimRemovefeedback():
+@app.route('/xssadmin/removefeedback')
+def pageXssadminRemovefeedback():
 	if session.get('loggedin') != "True":
-		return render_template('feedbacklogin.html', page='xssvictim', incorrect=True)
+		return render_template('login.html', page='xssadmin', incorrect=True)
 	else:
 		conn = sqlite3.connect(commentdb)
 		c = conn.cursor()
@@ -213,28 +214,58 @@ def pageXssvictimRemovefeedback():
 		c.execute(sql)
 		conn.commit()
 		c.close()
-		return redirect(request.url_root + "xssvictim", code=302)
+		return redirect(request.url_root + "xssadmin", code=302)
 	
-@app.route('/xssvictim/removecookie')
-def pageXssvictimRemovecookie():
+@app.route('/removecookies')
+def pageXssadminRemovecookie():
 	if session.get('loggedin'):
 		session.pop('loggedin', None)	
-		return "ok"
+		session.clear()
+		return render_template('select.html', message="Ok, removed cookies.")
 	else:
-		return "didnt find the cookie"
+		session.clear()
+		return render_template('select.html', message="Cleared all cookies, couldn't find the loggedin cookie.")
 		
-@app.route('/xssvictim', methods = ['POST'])
-def pageXssvictimPost():
+		
+		
+@app.route('/logout/')
+def pageLogoutEmptyPage():
+		return pageSelect()
+		
+@app.route('/logout/<page>')
+def pageLogout(page):
+	if session.get('loggedin'):
+		session.pop('loggedin', None)	
+		session.clear()
+		return render_template('login.html', page=page)
+	else:
+		session.clear()
+		return render_template('login.html', page=page)	
+		
+@app.route('/xssadmin', methods = ['POST'])
+def pageXssadminPost():
 	username = request.form['username']
 	password = request.form['password']
 	
 	if username == 'Administrator' and password == 'admin':
 		session['loggedin'] = "True"
-		return redirect(request.url_root + "xssvictim", code=302)
+		return redirect(request.url_root + "xssadmin", code=302)
 	else:
-		return render_template('feedbacklogin.html', page='xssvictim', incorrect=True)
-			
-
+		return render_template('login.html', page='xssadmin', incorrect=True)
+		
+@app.route('/xssadmin/adddummydata')
+def pageXssadminAdddummydata():
+	conn = sqlite3.connect(commentdb)
+	c = conn.cursor()
+	c.execute('DELETE FROM comments')
+	c.execute('CREATE TABLE IF NOT EXISTS comments("comment" TEXT, "name" TEXT)')
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("Do you think you're living an ordinary life? You are so mistaken it's difficult to even explain. The mere fact that you exist makes you extraordinary. The odds of you existing are less than winning the lottery, but here you are. Are you going to let this extraordinary opportunity pass?","Sandeep"))
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("Indescribable oppression, which seemed to generate in some unfamiliar part of her consciousness, filled her whole being with a vague anguish. It was like a shadow, like a mist passing across her soul's summer day. It was strange and unfamiliar; it was a mood. She did not sit there inwardly upbraiding her husband, lamenting at Fate, which had directed her footsteps to the path which they had taken. She was just having a good cry all to herself. The mosquitoes made merry over her, biting her firm, round arms and nipping at her bare insteps.","Jacob"))
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("I'm heading back to Colorado tomorrow after being down in Santa Barbara over the weekend for the festival there. I will be making October plans once there and will try to arrange so I'm back here for the birthday if possible. I'll let you know as soon as I know the doctor's appointment schedule and my flight plans.","Marc"))
+	conn.commit()
+	c.close()
+	return render_template('select.html', message="Dummy data added")
+	
 @app.route('/evilimage')
 def pageEvilimage():
 	cookies = request.args.get('get')
@@ -247,7 +278,17 @@ def pageEvilimage():
 	c.execute('''INSERT OR IGNORE INTO evilimage(data) VALUES (?)''', (cookies,))
 	conn.commit()
 	c.close()
-	return "Couldnt display image"
+	return send_file('static/evilimg.png', mimetype='image/png', as_attachment=False)
+	
+@app.route('/evillog/reset')
+def pageEvillogReset():
+	conn = sqlite3.connect(tempdb)
+	c = conn.cursor()	
+	c.execute('CREATE TABLE IF NOT EXISTS evilimage("data" TEXT)')
+	c.execute('''DELETE FROM evilimage''')
+	conn.commit()
+	c.close()
+	return "ok"
 	
 @app.route('/evillog')
 def pageEvillog():
@@ -263,7 +304,31 @@ def pageEvillog():
 		return str(result[0])
 	else:
 		return "No data"
-
+		
+@app.route('/resetall')
+def pageResetall():	
+	conn = sqlite3.connect(tempdb)
+	c = conn.cursor()	
+	c.execute('CREATE TABLE IF NOT EXISTS evilimage("data" TEXT)')
+	c.execute('''DELETE FROM evilimage''')
+	conn.commit()
+	c.close()	
+	
+	conn = sqlite3.connect(commentdb)
+	c = conn.cursor()
+	c.execute('DELETE FROM comments')
+	c.execute('CREATE TABLE IF NOT EXISTS comments("comment" TEXT, "name" TEXT)')
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("Do you think you're living an ordinary life? You are so mistaken it's difficult to even explain. The mere fact that you exist makes you extraordinary. The odds of you existing are less than winning the lottery, but here you are. Are you going to let this extraordinary opportunity pass?","Sandeep"))
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("Indescribable oppression, which seemed to generate in some unfamiliar part of her consciousness, filled her whole being with a vague anguish. It was like a shadow, like a mist passing across her soul's summer day. It was strange and unfamiliar; it was a mood. She did not sit there inwardly upbraiding her husband, lamenting at Fate, which had directed her footsteps to the path which they had taken. She was just having a good cry all to herself. The mosquitoes made merry over her, biting her firm, round arms and nipping at her bare insteps.","Jacob"))
+	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("I'm heading back to Colorado tomorrow after being down in Santa Barbara over the weekend for the festival there. I will be making October plans once there and will try to arrange so I'm back here for the birthday if possible. I'll let you know as soon as I know the doctor's appointment schedule and my flight plans.","Marc"))
+	conn.commit()
+	c.close()
+	
+	if session.get('loggedin'):
+		session.pop('loggedin', None)	
+	session.clear()
+	return render_template('select.html', message="Cookies and databases has been reset")
+	
 if __name__ == "__main__":
 	if prod:
 		app.run()

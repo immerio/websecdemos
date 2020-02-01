@@ -1,0 +1,103 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Login | Frigg MDM</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="icon" href="{{ url_for('static', filename='src/img/frigg-dummy.png') }}" type="image/x-icon" />
+
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/bootstrap/dist/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/ionicons/dist/css/ionicons.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/icon-kit/dist/css/iconkit.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/theme.min.css') }}">
+		<style>
+		 #buildversion {
+			position: fixed;
+			bottom: 0;
+			right: 0;
+		  }
+		</style>		
+        <script src="{{ url_for('static', filename='src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+    </head>
+
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="auth-wrapper">
+            <div class="container-fluid h-100">
+                <div class="row flex-row h-100 bg-white">
+                    <div class="col-xl-8 col-lg-6 col-md-5 p-0 d-md-block d-lg-block d-sm-none d-none">
+                        <div class="lavalite-bg" style="background-image: url('{{ url_for('static', filename='img/auth/login-bg.jpg') }}')">
+                            <div class="lavalite-overlay"></div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
+                        <div class="authentication-form mx-auto">
+                            <h3>Demo Selection</h3>
+                          <div class="table-responsive">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">Injection</th>
+														<td><a href="/inject">Login</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Broken Authentication</th>
+														<td><a href="brokenauth1">Login 1</a> | <a href="brokenauth2">Login 2</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Cross Side Scripting Pages</th>
+														<td><a href="/xssadmin">Login and Contact Form</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">Cross side Scripting Tools</th>
+														<td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="/evillog/reset">Reset evil log</a> | <a href="/evilimage">Evil image (?get=cookie)</a> | <a href="/evillog">Evil log</a></td>
+                                                    </tr>													
+                                                    <tr>
+                                                        <th scope="row">Security Misconfiguration</th>
+														<td><a href=""><a href="/secmis">Login</a></td>
+                                                    </tr>														
+	                                                <tr>
+                                                        <th scope="row">Broken Access Control</th>
+														<td><a href=""><a href="/brokenaccess">Login</a></td>
+                                                    </tr>	
+                                                    <tr>
+                                                        <th scope="row">Broken Session</th>
+														<td><a href=""><a href="/brokensession">Login</a></td>
+                                                    </tr>
+												
+													
+                                                </tbody>
+                                            </table>
+                                            <br>
+                                            <p>{{message}}</p>
+                                            <p><a href="/resetall"><buttontype="button" class="btn btn-primary"><i class="ik ik-zap"></i>Reset all</button></a></p>
+                                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{ url_for('static', filename='src/js/vendor/jquery-3.3.1.min.js') }}"><\/script>')</script>
+        <script src="{{ url_for('static', filename='plugins/popper.js/dist/umd/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='plugins/screenfull/dist/screenfull.js') }}"></script>
+        <script src="{{ url_for('static', filename='dist/js/theme.js') }}"></script>
+	<div id="buildversion">
+	<a href="/select">Build 20541.select &nbsp;</a>
+	</div>		
+    </body>
+</html>
