@@ -8,7 +8,7 @@ app.config.update({
     'SESSION_COOKIE_HTTPONLY': False,
 })
 
-prod = False
+prod = True
 
 if prod:
 	tempdb = "/home/runner/flaskapp/tempdb"
@@ -328,6 +328,10 @@ def pageResetall():
 		session.pop('loggedin', None)	
 	session.clear()
 	return render_template('select.html', message="Cookies and databases has been reset")
+	
+@app.route('/dcheck')
+def pageDcheck():
+	return render_template('depcheck.html')	
 	
 if __name__ == "__main__":
 	if prod:
