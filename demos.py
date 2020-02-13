@@ -8,7 +8,7 @@ app.config.update({
     'SESSION_COOKIE_HTTPONLY': False,
 })
 
-prod = False
+prod = True
 
 if prod:
 	#docker
