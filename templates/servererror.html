@@ -7,5 +7,5 @@
 					'<body>'
 					'<div id="header"><h1>Server Error</h1></div>'
 					'<div id="content">'
-					'<div class="content-container"><fieldset>  <h2>500 - Internal server error.</h2>  <h3>There is a problem with the resource you are looking for, and it cannot be displayed.</h3>  <p>Error in: <i>/secmis/admin/sanitizecheck.aspx</i></p> </fieldset></div>'
+					'<div class="content-container"><fieldset>  <h2>500 - Internal server error.</h2>  <h3>There is a problem with the resource you are looking for, and it cannot be displayed.</h3>  {%if incorrectuser%}<p>Error: <i>{{incorrectuser}}</i></p>{%else%}<p>Error in: <i>/secmis/admin/sanitizecheck.aspx</i></p>{%endif%} </fieldset></div>'
 					'</div></body></html>

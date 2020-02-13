@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, session, send_file
+from flask import Flask, request, redirect, render_template, session, send_file, Markup
 import sqlite3, os
 
 app = Flask(__name__)
@@ -8,11 +8,12 @@ app.config.update({
     'SESSION_COOKIE_HTTPONLY': False,
 })
 
-prod = True
+prod = False
 
 if prod:
-	tempdb = "/home/runner/flaskapp/tempdb"
-	commentdb = "/home/runner/flaskapp/commentdb"
+	#docker
+	tempdb = "/home/mrdemo/dbs/tempdb"
+	commentdb = "/home/mrdemo/dbs/commentdb"
 else:
 	tempdb = "tempdb"
 	commentdb = "commentdb"
@@ -21,6 +22,52 @@ else:
 @app.route('/')
 def pageFront():
 	return render_template('login.html')
+
+@app.route('/help')
+def pageHelp():
+	return render_template('help.html')	
+
+@app.route('/test/extended')
+def pageTestExtended():
+	return pageTest(extended=True)
+	
+@app.route('/test')
+def pageTest(extended=False):
+	resultString = "<br>-----BEGIN TESTS-----<br><br>"
+
+	resultString = appendResultString(resultString, "pageBrokenaccess", pageBrokenaccess())
+	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin", pageBrokenaccessLoggedin(6510))
+	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin", pageBrokenaccessLoggedin(0))
+	resultString = appendResultString(resultString, "pageBrokenauth1", pageBrokenauth1())
+	resultString = appendResultString(resultString, "pageBrokenauth2", pageBrokenauth2())
+	resultString = appendResultString(resultString, "pageBrokensession", pageBrokensession())
+	resultString = appendResultString(resultString, "pageCookies", pageCookies())
+	resultString = appendResultString(resultString, "pageEvilimage", pageEvilimage())
+	resultString = appendResultString(resultString, "pageEvillog", pageEvillog())
+	resultString = appendResultString(resultString, "pageFront", pageFront())
+	resultString = appendResultString(resultString, "pageHelp", pageHelp())
+	resultString = appendResultString(resultString, "pageInjection", pageInjection())
+	resultString = appendResultString(resultString, "pageSecmis", pageSecmis())
+	resultString = appendResultString(resultString, "pageSecmisAdmin", pageSecmisAdmin())
+	resultString = appendResultString(resultString, "pageSecmisAdmin2", pageSecmisAdmin2())
+	resultString = appendResultString(resultString, "pageSelect", pageSelect())
+	resultString = appendResultString(resultString, "pageXss", pageXss())
+	resultString = appendResultString(resultString, "pageXssadmin", pageXssadmin())
+	resultString = appendResultString(resultString, "pageXssadminRemovecookie", pageXssadminRemovecookie())
+	resultString = appendResultString(resultString, "pageXssadminRemovefeedback", pageXssadminRemovefeedback())
+	resultString = appendResultString(resultString, "pageLogout", pageLogout("dummy"))
+	resultString = appendResultString(resultString, "pageLogoutEmptyPage", pageLogoutEmptyPage())
+	resultString = appendResultString(resultString, "pageResetall", pageResetall())
+	if extended:
+		resultString = appendResultString(resultString, "pageDcheck", pageDcheck())
+	else:
+		resultString = resultString + "pageDcheck ..n/a (use /test/extended)<br>"	
+		
+		
+	resultString = resultString + "<br>----- END TESTS -----<br>"		
+	resultString = Markup(resultString)
+		
+	return render_template('minimal.html', content=resultString)
 	
 @app.route('/select')
 def pageSelect():
@@ -160,7 +207,7 @@ def pageBrokenaccessLoggedin(userid):
 	elif userid == "6510":
 		return render_template('inside.html', admin=False, page='brokenaccess')
 	else:
-		return render_template('minimal.html', page='brokenaccess', content='Error: Incorrect user')
+		return render_template('servererror.html', page='brokenaccess', incorrectuser='Incorrect user')
 		
 @app.route('/xsscontact')
 def pageXss():
@@ -332,7 +379,20 @@ def pageResetall():
 @app.route('/dcheck')
 def pageDcheck():
 	return render_template('depcheck.html')	
-	
+
+def appendResultString(resultString, label, testResult):
+	try:
+		if testResult:
+			resultString = resultString + label + " ..ok<br>"
+		else:
+			resultString = resultString + label + " ..fail!<br>"
+	except Exception:
+		resultString = resultString + label + " ..fail!<br>"
+		return resultString
+
+	return resultString
+		
+
 if __name__ == "__main__":
 	if prod:
 		app.run()

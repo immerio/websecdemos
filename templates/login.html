@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login | Frigg MDM</title>
+        <title>Login | First Filing MDM</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -56,14 +56,14 @@
                             <div class="logo-centered">
                                 <a href="/select"><img src="{{ url_for('static', filename='src/img/frigg-dummy.png') }}" alt=""></a>
                             </div>
-                            <h3>Frigg MDM Administration</h3>
+                            <h3>First Filing MDM Administration</h3>
                             
                             {% if sqlline %}
                             <span id="sqldisplay">{{sqlline}}</span>.</h1>
                             {% elif incorrect %}
                             <p>Incorrect credentials!</p>
                             {% else %}
-                            <p>Sign in with your Frigg-account</p>
+                            <p>Sign in with your First Filing-account</p>
                             {% endif %}
                             <form action="/{{page}}" method="post">
                                 <div class="form-group">
