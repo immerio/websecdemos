@@ -33,11 +33,11 @@ def pageTestExtended():
 	
 @app.route('/test')
 def pageTest(extended=False):
-	resultString = "<br>-----BEGIN TESTS-----<br><br>"
+	resultString = "-----BEGIN TESTS-----<br><br>"
 
 	resultString = appendResultString(resultString, "pageBrokenaccess", pageBrokenaccess())
-	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin", pageBrokenaccessLoggedin(6510))
-	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin", pageBrokenaccessLoggedin(0))
+	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin(6510)", pageBrokenaccessLoggedin(6510))
+	resultString = appendResultString(resultString, "pageBrokenaccessLoggedin(0)", pageBrokenaccessLoggedin(0))
 	resultString = appendResultString(resultString, "pageBrokenauth1", pageBrokenauth1())
 	resultString = appendResultString(resultString, "pageBrokenauth2", pageBrokenauth2())
 	resultString = appendResultString(resultString, "pageBrokensession", pageBrokensession())
