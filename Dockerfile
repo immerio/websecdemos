@@ -1,8 +1,8 @@
 FROM python:3.10-alpine3.15
 
-RUN adduser -D mrdemo
+RUN adduser -D duser
 
-WORKDIR /home/mrdemo
+WORKDIR /home/duser
 
 COPY requirements.txt requirements.txt
 RUN python -m venv venv
@@ -18,8 +18,8 @@ RUN chmod +x boot.sh
 
 ENV FLASK_APP demos.py
 
-RUN chown -R mrdemo:mrdemo ./
-USER mrdemo
+RUN chown -R duser:duser ./
+USER duser
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]

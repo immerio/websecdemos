@@ -1,0 +1,10 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ url_for('static', filename='src/js/vendor/jquery-3.3.1.min.js') }}"><\/script>')</script>
+<script src="{{ url_for('static', filename='plugins/popper.js/dist/umd/popper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='plugins/screenfull/dist/screenfull.js') }}"></script>
+<script src="{{ url_for('static', filename='dist/js/theme.js') }}"></script> 
+<div id="buildversion">
+	<a href="/select">Build 20541.{% if page %}{{page}}{% else %}root{% endif %} &nbsp;</a>
+</div>

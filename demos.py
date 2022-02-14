@@ -12,8 +12,8 @@ prod = True
 
 if prod:
 	#docker
-	tempdb = "/home/mrdemo/dbs/tempdb"
-	commentdb = "/home/mrdemo/dbs/commentdb"
+	tempdb = "/home/d_user/dbs/tempdb"
+	commentdb = "/home/d_user/dbs/commentdb"
 else:
 	tempdb = "tempdb"
 	commentdb = "commentdb"
@@ -27,12 +27,8 @@ def pageFront():
 def pageHelp():
 	return render_template('help.html')	
 
-@app.route('/test/extended')
-def pageTestExtended():
-	return pageTest(extended=True)
-	
 @app.route('/test')
-def pageTest(extended=False):
+def pageTest():
 	resultString = "-----BEGIN TESTS-----<br><br>"
 
 	resultString = appendResultString(resultString, "pageBrokenaccess", pageBrokenaccess())
@@ -58,11 +54,6 @@ def pageTest(extended=False):
 	resultString = appendResultString(resultString, "pageLogout", pageLogout("dummy"))
 	resultString = appendResultString(resultString, "pageLogoutEmptyPage", pageLogoutEmptyPage())
 	resultString = appendResultString(resultString, "pageResetall", pageResetall())
-	if extended:
-		resultString = appendResultString(resultString, "pageDcheck", pageDcheck())
-	else:
-		resultString = resultString + "pageDcheck ..n/a (use /test/extended)<br>"	
-		
 		
 	resultString = resultString + "<br>----- END TESTS -----<br>"		
 	resultString = Markup(resultString)
