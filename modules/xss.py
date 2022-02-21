@@ -50,7 +50,7 @@ def pageXssadminRemovefeedback():
 		c.execute(sql)
 		conn.commit()
 		c.close()
-		return redirect("/xssadmin", code=302)
+		return redirect(request.url_root + "xssadmin", code=302)
 	
 @app.route('/removecookies')
 def pageXssadminRemovecookie():
