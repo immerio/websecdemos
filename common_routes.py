@@ -10,10 +10,6 @@ def pageFront():
 @app.route('/help')
 def pageHelp():
 	return render_template('help.html')	
-
-@app.route('/test')
-def pageTest():	
-	return render_template('minimal.html', content=test_response.getTestresults())
 	
 @app.route('/select')
 def pageSelect():

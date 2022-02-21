@@ -1,4 +1,4 @@
-import requests, pytest, subprocess
+import requests, pytest
 
 base_url = "http://127.0.0.1:5000/"
 
@@ -53,10 +53,3 @@ def test_xss_admin_post():
 
 def test_xss_evillog():
     checkGet("evillog")
-
-def getTestresults():
-    pytest_command_string = 'pytest -q'
-    pytest_command = subprocess.Popen(pytest_command_string.split(), shell=False, stdout=subprocess.PIPE)
-    pytest_command_out = pytest_command.communicate()[0]
-
-    return pytest_command_out.decode("utf-8")
