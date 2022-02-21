@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, redirect
 
 app = Blueprint('brokenaccess',__name__)
 @app.route('/brokenaccess')

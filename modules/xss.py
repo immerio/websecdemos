@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, session
+from flask import Blueprint, request, render_template, session, redirect
 
 import sqlite3
 
@@ -50,7 +50,7 @@ def pageXssadminRemovefeedback():
 		c.execute(sql)
 		conn.commit()
 		c.close()
-		return redirect(request.url_root + "xssadmin", code=302)
+		return redirect("/xssadmin", code=302)
 	
 @app.route('/removecookies')
 def pageXssadminRemovecookie():

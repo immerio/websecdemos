@@ -47,6 +47,10 @@ def test_xss_contact():
 def test_xss_admin():
     checkGet("xssadmin")
 
+def test_xss_admin_post():
+    post_data = {'username':'Administrator','password':'admin'}
+    checkPost("xssadmin", post_data)
+
 def test_xss_evillog():
     checkGet("evillog")
 
