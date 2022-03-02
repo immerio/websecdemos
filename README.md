@@ -1,5 +1,3 @@
-[![websecdemos](static/img/readme_header.png)](https://github.com/immerio/websecdemos)
-
 ## Web Security Demos
 
 A web application with several vulnerabilities for demonstration purposes.
@@ -9,6 +7,8 @@ Included vulnerabilities:
 - Injection
 - Security Misconfiguration
 - Cross Site Scripting
+
+[![websecdemos](static/img/readme_header.png)](https://github.com/immerio/websecdemos)
 
 ## Setup
 
