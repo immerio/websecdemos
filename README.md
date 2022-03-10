@@ -19,6 +19,7 @@ Clone repository:
 
 ### Docker
 > docker build -t websecdemos .
+
 > docker run -d --rm -p 127.0.0.1:5000:5000 websecdemos
 
 or with docker-compose installed:
