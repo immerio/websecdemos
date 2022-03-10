@@ -15,6 +15,7 @@ Included vulnerabilities:
 Clone repository:
 
 > git clone https://github.com/immerio/websecdemos.git
+
 > cd websecdemos
 
 ### Docker
