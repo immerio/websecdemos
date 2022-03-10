@@ -1,10 +1,10 @@
-## Web Security Demos
+## Web Application Security Demos
 
 A web application with several vulnerabilities for demonstration purposes.
 Included vulnerabilities:
--  Broken authentication
+- Broken authentication
 - Broken session management
-- Injection
+- SQL Injection
 - Security Misconfiguration
 - Cross Site Scripting
 
@@ -12,12 +12,18 @@ Included vulnerabilities:
 
 ## Setup
 
+Clone repository:
+
+> git clone https://github.com/immerio/websecdemos.git
+> cd websecdemos
+
 ### Docker
-> docker-compose up -d
-
-or 
-
+> docker build -t websecdemos .
 > docker run -d --rm -p 127.0.0.1:5000:5000 websecdemos
+
+or with docker-compose installed:
+
+> docker-compose up -d
 
 Then browse to http://localhost:5000
 
@@ -31,5 +37,5 @@ With Python3 and Pip installed:
 Then browse to http://localhost:5000
 
 ## Usage
-Go to http://localhost:5000/selection and choose one of the demos included. 
-There is a short help text for each demo at http://localhost:5000/help
+Go to [/selection](http://localhost:5000/selection) and choose one of the demos included. 
+There is a short help text for each demo at [/help](http://localhost:5000/help)
