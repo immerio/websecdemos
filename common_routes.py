@@ -9,7 +9,7 @@ def pageFront():
 
 @app.route('/help')
 def pageHelp():
-	return render_template('help.html', domain=request.base_url)	
+	return render_template('help.html', domain=request.url_root)	
 	
 @app.route('/select')
 def pageSelect():
