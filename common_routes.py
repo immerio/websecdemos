@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session
+from flask import Blueprint, render_template, session, request
 import test_response
 
 app = Blueprint('common_routes',__name__)
@@ -9,7 +9,7 @@ def pageFront():
 
 @app.route('/help')
 def pageHelp():
-	return render_template('help.html')	
+	return render_template('help.html', domain=request.base_url)	
 	
 @app.route('/select')
 def pageSelect():

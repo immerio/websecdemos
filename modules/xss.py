@@ -8,7 +8,7 @@ app = Blueprint('xss',__name__)
 		
 @app.route('/xsscontact')
 def pageXss():
-	return render_template('contact.html', page='xsscontact')
+	return render_template('contact.html', page='xsscontact', domain=request.url_root)
 	
 @app.route('/xsscontact', methods = ['POST'])
 def pageXssPost():	
