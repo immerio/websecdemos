@@ -39,5 +39,5 @@ With Python3 and Pip installed:
 Then browse to http://localhost:5000
 
 ## Usage
-Go to [/selection](http://localhost:5000/selection) and choose one of the demos included. 
+Go to [/select](http://localhost:5000/select) and choose one of the demos included. 
 There is a short help text for each demo at [/help](http://localhost:5000/help)
