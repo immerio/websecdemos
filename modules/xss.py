@@ -67,7 +67,7 @@ def pageXssadminPost():
 	username = request.form['username']
 	password = request.form['password']
 	
-	if username == 'Administrator' and password == 'admin':
+	if 'admin' in username.lower() and 'admin' in password.lower():
 		session['loggedin'] = "True"
 		return redirect(request.url_root + "xssadmin", code=302)
 	else:

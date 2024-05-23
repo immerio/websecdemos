@@ -10,7 +10,7 @@ def pageBrokenauth1Post():
 	username = request.form['username']
 	password = request.form['password']
 	
-	if username == 'Administrator' and password == 'admin':
+	if 'admin' in username.lower() and 'admin' in password.lower():
 		return render_template('inside.html', admin=True, page='brokenauth1')
 	else:
 		return render_template('login.html', page='brokenauth1', incorrect=True, username=username, password=password)
