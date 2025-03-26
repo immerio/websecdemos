@@ -41,3 +41,14 @@ Then browse to http://localhost:5000
 ## Usage
 Go to [/select](http://localhost:5000/select) and choose one of the demos included. 
 There is a short help text for each demo at [/help](http://localhost:5000/help)
+
+
+## Secrets in code
+There are some (invalid) AWS secrets checked into the code, these can be discovered using truffle hog or any other secret scanning tool
+
+> sudo docker run --rm -it trufflesecurity/trufflehog:latest git https://github.com/immerio/websecdemos
+
+or if running on a local repo:
+
+> sudo docker run --rm -it -v "$PWD:/repo" trufflesecurity/trufflehog:latest git file:///repo
+

@@ -4,3 +4,7 @@ services:
     build: .
     ports:
       - "127.0.0.1:5000:5000"
+    environment:
+      AWS_ACCESS_KEY_ID: "AKIARJOCUE5HVJDLXHEV"
+      AWS_SECRET_ACCESS_KEY: "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"
+      AWS_S3_BUCKET_NAME: "mdmsecretstuff"
