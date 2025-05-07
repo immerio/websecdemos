@@ -1,0 +1,193 @@
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        {% set title = 'Parameter Tampering - Profile' %}
+        {% include 'b_head.html' %}
+    </head>
+
+    <body>
+        <div class="wrapper">
+            <header class="header-top" header-theme="light">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <div class="top-menu d-flex align-items-center">
+                            <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+                            <div class="header-search">
+                                <div class="input-group">
+                                    <span class="input-group-addon search-close"><i class="ik ik-x"></i></span>
+                                    <input type="text" class="form-control">
+                                    <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
+                                </div>
+                            </div>
+                            <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
+                        </div>
+                        <div class="top-menu d-flex align-items-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ username }}</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="/resetall"><i class="ik ik-power dropdown-icon"></i> Logout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-wrap">
+                <div class="app-sidebar colored">
+                    <div class="sidebar-header">
+                        <a class="header-brand" href="/select">
+                            <div class="logo-img">
+                               <img src="{{ url_for('static', filename='img/mlogo.png') }}" class="header-brand-img" alt="mHack"> 
+                            </div>
+                            <span class="text">mHack MDM</span>
+                        </a>
+                        <button type="button" class="nav-toggle"><i data-toggle="expanded" class="ik ik-toggle-right toggle-icon"></i></button>
+                        <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+                    </div>
+                    
+                    <div class="sidebar-content">
+                        <div class="nav-container">
+                            <nav id="main-menu-navigation" class="navigation-main">
+                                <div class="nav-lavel">Navigation</div>
+                                <div class="nav-item active">
+                                    <a href="/paramtamp/profile"><i class="ik ik-user"></i><span>Profile</span></a>
+                                </div>
+                                {% if is_admin %}
+                                <div class="nav-item">
+                                    <a href="/paramtamp/admin"><i class="ik ik-shield"></i><span>Admin Panel</span></a>
+                                </div>
+                                {% endif %}
+                                <div class="nav-item">
+                                    <a href="/select"><i class="ik ik-home"></i><span>Back to Demos</span></a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="main-content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>Profile Page</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5>Welcome, {{ username }}!</h5>
+                                        <p>Admin Status: <span id="admin-status" class="badge {% if is_admin %}badge-success{% else %}badge-secondary{% endif %}">
+                                            {% if is_admin %}Yes{% else %}No{% endif %}
+                                        </span></p>
+                                        
+                                        <form id="profile-form" class="mt-4">
+                                            <div class="form-group">
+                                                <label for="firstname">First Name</label>
+                                                <input type="text" class="form-control" id="firstname" value="{{ firstname }}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastname">Last Name</label>
+                                                <input type="text" class="form-control" id="lastname" value="{{ lastname }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                                        </form>
+
+                                        <div class="mt-3" id="update-result"></div>
+
+                                        <div class="mt-4">
+                                            {% if is_admin %}
+                                            <a href="/paramtamp/admin" class="btn btn-success">Access Admin Panel</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                        <span class="text-center text-sm-left d-md-inline-block">mHack MDM Demo Application v0.1</span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+        <script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/perfect-scrollbar.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/theme.min.js') }}"></script>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = "{{ username }}";
+            
+            document.getElementById('profile-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const firstname = document.getElementById('firstname').value;
+                const lastname = document.getElementById('lastname').value;
+                
+                // Create request payload
+                const data = {
+                    firstname: firstname,
+                    lastname: lastname
+                    // The vulnerable parameter "is_admin" can be added here in an intercepted request
+                };
+                
+                // Send AJAX request
+                fetch('/paramtamp/update_profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update the user data in localStorage
+                        updateUserInLocalStorage(username, data.user_data);
+                        
+                        document.getElementById('update-result').innerHTML = 
+                            '<div class="alert alert-success">Profile updated successfully! Refresh to see changes.</div>';
+                            
+                        // Reload page after 1 second to reflect any changes
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        document.getElementById('update-result').innerHTML = 
+                            '<div class="alert alert-danger">Error updating profile: ' + data.message + '</div>';
+                    }
+                })
+                .catch((error) => {
+                    document.getElementById('update-result').innerHTML = 
+                        '<div class="alert alert-danger">Error updating profile: ' + error + '</div>';
+                });
+            });
+            
+            // Function to update user in localStorage
+            function updateUserInLocalStorage(username, userData) {
+                // Get current users
+                const usersData = JSON.parse(localStorage.getItem('paramtamp_users') || '{}');
+                
+                // Update user data (keeping password intact)
+                if (usersData[username]) {
+                    const password = usersData[username].password;
+                    usersData[username] = {
+                        ...userData,
+                        password: password
+                    };
+                    
+                    // Save back to localStorage
+                    localStorage.setItem('paramtamp_users', JSON.stringify(usersData));
+                }
+            }
+        });
+        </script>
+    </body>
+</html>
