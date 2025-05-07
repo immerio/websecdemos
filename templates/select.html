@@ -21,49 +21,51 @@
                     <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
                         <div class="authentication-form mx-auto">
                             <h3>Demo Selection</h3>
-                          <div class="table-responsive">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">Injection</th>
-														<td><a href="/inject">Login</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Broken Authentication</th>
-														<td><a href="brokenauth1">Login 1</a> | <a href="brokenauth2">Login 2</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Cross Side Scripting Pages</th>
-														<td><a href="/xssadmin">Login and Contact Form</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">Cross side Scripting Tools</th>
-														<td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="/evillog/reset">Reset evil log</a> | <a href="/evilimage">Evil image (?get=cookie)</a> | <a href="/evillog">Evil log</a></td>
-                                                    </tr>													
-                                                    <tr>
-                                                        <th scope="row">Security Misconfiguration</th>
-														<td><a href=""><a href="/secmis">Login</a></td>
-                                                    </tr>														
-	                                                <tr>
-                                                        <th scope="row">Broken Access Control</th>
-														<td><a href=""><a href="/brokenaccess">Login</a></td>
-                                                    </tr>	
-                                                    <tr>
-                                                        <th scope="row">Broken Session</th>
-														<td><a href=""><a href="/brokensession">Login</a></td>
-                                                    </tr>    
-                                                    <tr>
-                                                        <th scope="row">Parameter Tampering</th>
-														<td><a href="/paramtamp">Profile Edit Demo</a></td>
-                                                    </tr>                                                 
-												
-													
-                                                </tbody>
-                                            </table>
-                                            <br>
-                                            <p>{{message}}</p>
-                                            <p><a href="/resetall"><buttontype="button" class="btn btn-primary"><i class="ik ik-zap"></i>Reset all</button></a>  <a href="/help"><buttontype="button" class="btn btn-secondary"><i class="ik ik-help-circle"></i>Help</button></a></p>
-                                        </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Injection</th>
+                                                <td><a href="/inject">Login</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Broken Authentication</th>
+                                                <td><a href="brokenauth1">Login 1</a> | <a href="brokenauth2">Login 2</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Cross Side Scripting Pages</th>
+                                                <td><a href="/xssadmin">Login and Contact Form</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Cross side Scripting Tools</th>
+                                                <td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="/evillog/reset">Reset evil log</a> | <a href="/evilimage">Evil image (?get=cookie)</a> | <a href="/evillog">Evil log</a></td>
+                                            </tr>													
+                                            <tr>
+                                                <th scope="row">Security Misconfiguration</th>
+                                                <td><a href=""><a href="/secmis">Login</a></td>
+                                            </tr>														
+                                            <tr>
+                                                <th scope="row">Broken Access Control</th>
+                                                <td><a href=""><a href="/brokenaccess">Login</a></td>
+                                            </tr>	
+                                            <tr>
+                                                <th scope="row">Broken Session</th>
+                                                <td><a href=""><a href="/brokensession">Login</a></td>
+                                            </tr>    
+                                            <tr>
+                                                <th scope="row">Parameter Tampering</th>
+                                                <td><a href="/paramtamp">Profile Edit Demo</a></td>
+                                            </tr>                                                 
+                                            <tr>
+                                                <th scope="row">Path Traversal</th>
+                                                <td><a href=""><a href="/pathtraversal/download?file=usage_report.pdf">Usage report</a></td>
+                                            </tr>                                                  
+                                        </tbody>
+                                    </table>
+                                <br>
+                                <p>{{message}}</p>
+                                <p><a href="/resetall"><buttontype="button" class="btn btn-primary"><i class="ik ik-zap"></i>Reset all</button></a>  <a href="/help"><buttontype="button" class="btn btn-secondary"><i class="ik ik-help-circle"></i>Help</button></a></p>
+                            </div>
                         </div>
                     </div>
                 </div>
