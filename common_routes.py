@@ -10,9 +10,9 @@ app = Blueprint('common_routes',__name__)
 
 def get_evil_domain():
 	"""Get the evil domain from environment variable or fallback to url_root"""
-	evil_domain = os.getenv('EVIL_DOMAIN')
-	if evil_domain:
-		return evil_domain
+	evil_host = os.getenv('EVIL_HOST')
+	if evil_host:
+		return evil_host.rstrip('/') + '/'
 	return request.url_root
 
 @app.route('/')

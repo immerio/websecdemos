@@ -13,9 +13,9 @@ app = Blueprint('csrf', __name__)
 
 def get_evil_domain():
 	"""Get the evil domain from environment variable or fallback to url_root"""
-	evil_domain = os.getenv('EVIL_DOMAIN')
-	if evil_domain:
-		return evil_domain
+	evil_host = os.getenv('EVIL_HOST')
+	if evil_host:
+		return evil_host.rstrip('/') + '/'
 	return request.url_root
 
 def init_csrf_db():
@@ -315,8 +315,11 @@ def csrf_toggle_protection():
 # Evil domain routes
 @app.route('/csrf/contractor-portal')
 def csrf_evil_contractor():
+	# Get MDM host URL for the target domain
+	mdm_host = os.getenv('MDM_HOST', 'http://localhost:5000')
+	mdm_target = mdm_host.rstrip('/') + '/'
 	return render_template('csrf_evil_contractor.html', 
-						   target_domain=request.url_root,
+						   target_domain=mdm_target,
 						   evil_domain=get_evil_domain())
 
 @app.route('/csrf/reset')

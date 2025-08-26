@@ -12,9 +12,9 @@ app = Blueprint('xss',__name__)
 
 def get_evil_domain():
 	"""Get the evil domain from environment variable or fallback to url_root"""
-	evil_domain = os.getenv('EVIL_DOMAIN')
-	if evil_domain:
-		return evil_domain
+	evil_host = os.getenv('EVIL_HOST')
+	if evil_host:
+		return evil_host.rstrip('/') + '/'
 	return request.url_root
 		
 @app.route('/xsscontact')
@@ -147,7 +147,29 @@ def pageEvillog():
 @app.route('/benefits-portal')
 def pageBenefitsPortal():
 	"""Evil benefits portal for CORS attack simulation"""
-	return render_template('cors_evil_benefits.html')
+	# Extract ports from full URLs for template
+	from urllib.parse import urlparse
+	
+	def extract_port_from_url(url, default_port):
+		try:
+			if url:
+				parsed = urlparse(url)
+				return str(parsed.port or (443 if parsed.scheme == 'https' else default_port))
+			return str(default_port)
+		except:
+			return str(default_port)
+	
+	evil_host_url = os.getenv('EVIL_HOST', 'http://localhost:8080')
+	mdm_host_url = os.getenv('MDM_HOST', 'http://localhost:5000')
+	
+	evil_port = extract_port_from_url(evil_host_url, 8080)
+	mdm_port = extract_port_from_url(mdm_host_url, 5000)
+	
+	return render_template('cors_evil_benefits.html', 
+						   mdm_port=mdm_port, 
+						   evil_port=evil_port,
+						   mdm_host_url=mdm_host_url,
+						   evil_host_url=evil_host_url)
 		
 @app.route('/resetall')
 def pageResetall():	

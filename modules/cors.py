@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 
 cors_bp = Blueprint('cors', __name__, url_prefix='/cors')
 
-# Get evil domain from environment with fallback
-EVIL_DOMAIN = os.getenv('EVIL_DOMAIN', 'http://localhost:8080')
+# Get evil domain from environment and ensure it ends with /
+def get_evil_domain():
+    evil_host = os.getenv('EVIL_HOST', 'http://localhost:8080')
+    return evil_host.rstrip('/') + '/'
 
-# Ensure evil domain ends with / for consistent URL building
-if not EVIL_DOMAIN.endswith('/'):
-    EVIL_DOMAIN += '/'
+EVIL_DOMAIN = get_evil_domain()
 
 def generate_cors_devices():
     """Generate realistic device data with sensitive information for CORS demo"""
