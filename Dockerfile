@@ -11,6 +11,7 @@ RUN venv/bin/pip install gunicorn
 
 COPY dbs/* dbs/
 COPY *.py ./
+COPY .env ./
 COPY modules/* modules/
 COPY static static
 COPY templates templates
