@@ -15,57 +15,43 @@ EVIL_DOMAIN = get_evil_domain()
 def generate_cors_devices():
     """Generate realistic device data with sensitive information for CORS demo"""
     
-    # Employee names with realistic variety
+    # Simplified employee names (reduced from 40+ to 12 for smaller session)
     employees = [
-        "Sarah Connor", "John Matrix", "Ellen Ripley", "James Bond", "Lara Croft",
-        "Ethan Hunt", "Alice Resident", "Leon Kennedy", "Jill Valentine", "Chris Redfield",
-        "Ada Wong", "Claire Redfield", "Rebecca Chambers", "Barry Burton", "Albert Wesker",
-        "Jack Ryan", "Jason Bourne", "John Rambo", "Dutch Schaefer", "Ripley Ellen",
-        "Trinity Anderson", "Neo Anderson", "Morpheus Captain", "Agent Smith", "Niobe Captain",
-        "Max Rockatansky", "Furiosa Imperator", "Rick Deckard", "Roy Batty", "Rachel Tyrell",
-        "John Connor", "Kyle Reese", "T-800 Model", "Marcus Wright", "Kate Connor",
-        "Diana Prince", "Bruce Wayne", "Clark Kent", "Barry Allen", "Arthur Curry",
-        "Victor Stone", "Hal Jordan", "Oliver Queen", "Dinah Lance", "Zatanna Zatara"
+        "Sarah Connor", "John Matrix", "Ellen Ripley", "James Bond", 
+        "Lara Croft", "Ethan Hunt", "Alice Resident", "Leon Kennedy",
+        "Trinity Anderson", "Neo Anderson", "Jack Ryan", "Jason Bourne"
     ]
     
-    # Device types with realistic distribution
+    # Simplified device types (reduced for smaller session)
     device_types = [
-        "iPhone 15 Pro", "iPhone 15", "iPhone 14 Pro", "iPhone 14", "iPhone 13 Pro",
-        "Samsung Galaxy S24", "Samsung Galaxy S23", "Samsung Galaxy A54", "Google Pixel 8",
-        "Google Pixel 7", "OnePlus 11", "Xiaomi 13 Pro", "iPad Pro 12.9", "iPad Air",
-        "Samsung Galaxy Tab S9", "Surface Pro 9", "MacBook Air M2", "MacBook Pro M3",
-        "Dell Latitude 5530", "HP EliteBook 850", "Lenovo ThinkPad X1", "Surface Laptop 5"
+        "iPhone 15 Pro", "iPhone 14", "Samsung Galaxy S24", "Google Pixel 8",
+        "iPad Pro", "MacBook Air M2", "Surface Pro 9"
     ]
     
-    # Departments for realistic organizational structure
+    # Simplified departments (reduced for smaller session)
     departments = [
-        "Engineering", "Sales", "Marketing", "HR", "Finance", "Legal", "Operations",
-        "Customer Support", "Product", "Security", "IT", "Executive", "Research"
+        "Engineering", "Sales", "Marketing", "HR", "Finance", "IT"
     ]
     
-    # Apps commonly found on corporate devices
+    # Simplified app lists (reduced for smaller session)
     app_lists = [
-        ["Slack", "Outlook", "Teams", "VPN Client", "Authenticator"],
-        ["Zoom", "Gmail", "Chrome", "Dropbox", "1Password"],
-        ["Salesforce", "Jira", "Confluence", "Tableau", "Office 365"],
-        ["WhatsApp", "LinkedIn", "Adobe Reader", "Spotify", "Netflix"],
-        ["Banking App", "Uber", "Maps", "Calendar", "Notes"],
-        ["CRM Mobile", "Expense Tracker", "Project Tracker", "Time Logger", "Scanner"]
+        ["Slack", "Outlook", "Teams"],
+        ["Zoom", "Gmail", "Chrome"],
+        ["Salesforce", "Jira", "Office 365"],
+        ["WhatsApp", "LinkedIn", "Maps"]
     ]
     
-    # Compliance violations for realism
+    # Simplified compliance violations (reduced for smaller session)
     violations = [
-        "Location services disabled", "Outdated OS version", "Jailbroken device detected",
-        "Weak passcode", "Auto-lock disabled", "VPN not configured", "Encryption disabled",
-        "Unknown app installed", "Developer mode enabled", "Debug mode active"
+        "Outdated OS", "Weak passcode", "VPN not configured", "Encryption disabled"
     ]
     
     devices = []
     used_imeis = set()
     used_phones = set()
     
-    # Generate exactly 385 devices (different from CSRF's 932 for isolation)
-    for i in range(385):
+    # Generate exactly 25 devices (reduced from 385 for reasonable session size)
+    for i in range(25):
         # Generate unique IMEI
         while True:
             imei = f"86153605{random.randint(1000000, 9999999)}"
@@ -80,18 +66,9 @@ def generate_cors_devices():
                 used_phones.add(phone)
                 break
         
-        # Generate realistic location coordinates (major US cities)
+        # Simplified location data (reduced from 10 to 4 cities)
         locations = [
-            "37.7749,-122.4194",  # San Francisco
-            "40.7128,-74.0060",   # New York
-            "34.0522,-118.2437",  # Los Angeles
-            "41.8781,-87.6298",   # Chicago
-            "29.7604,-95.3698",   # Houston
-            "33.4484,-112.0740",  # Phoenix
-            "39.9526,-75.1652",   # Philadelphia
-            "32.7767,-96.7970",   # Dallas
-            "30.2672,-97.7431",   # Austin
-            "25.7617,-80.1918"    # Miami
+            "San Francisco", "New York", "Los Angeles", "Chicago"
         ]
         
         device = {
@@ -101,20 +78,12 @@ def generate_cors_devices():
             "device_type": random.choice(device_types),
             "phone_number": phone,
             "imei": imei,
-            "serial_number": f"C{random.randint(100000000, 999999999)}",
             "location": random.choice(locations),
             "installed_apps": random.choice(app_lists),
-            "last_backup": (datetime.now() - timedelta(days=random.randint(1, 30))).strftime("%Y-%m-%d %H:%M:%S"),
-            "os_version": random.choice(["iOS 17.1", "iOS 16.7", "Android 14", "Android 13", "Windows 11"]),
-            "encryption_status": random.choice(["enabled", "disabled"]),
+            "os_version": random.choice(["iOS 17.1", "Android 14", "Windows 11"]),
             "jailbroken": random.choice([False, False, False, True]),  # Mostly not jailbroken
-            "compliance_violations": random.sample(violations, random.randint(0, 2)),
-            "emergency_contacts": [f"+1-555-{random.randint(1000, 9999)}", f"+1-555-{random.randint(1000, 9999)}"],
-            "last_seen": (datetime.now() - timedelta(hours=random.randint(1, 72))).strftime("%Y-%m-%d %H:%M:%S"),
-            "battery_level": random.randint(15, 100),
-            "storage_used": f"{random.randint(32, 256)}GB",
-            "network_info": random.choice(["WiFi", "Cellular", "VPN"]),
-            "device_value": f"${random.randint(500, 1500)}"
+            "compliance_violations": random.sample(violations, random.randint(0, 1)),
+            "last_seen": (datetime.now() - timedelta(hours=random.randint(1, 72))).strftime("%Y-%m-%d %H:%M:%S")
         }
         devices.append(device)
     
