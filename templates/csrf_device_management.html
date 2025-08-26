@@ -1,0 +1,108 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    {% set title = 'Device Management' %}
+    {% include 'b_head.html' %}
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="container-fluid h-100">
+            <div class="row flex-row h-100 bg-white">
+                <div class="col-xl-8 col-lg-6 col-md-5 p-0 d-md-block d-lg-block d-sm-none d-none">
+                    <div class="lavalite-bg" style="background-image: url('{{ url_for('static', filename='img/login-bg.jpg') }}')">
+                        <div class="lavalite-overlay"></div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
+                    <div class="authentication-form mx-auto">
+                        <div class="logo-centered">
+                            <a href="/select"><img src="{{ url_for('static', filename='img/mlogo.png') }}" alt=""></a>
+                        </div>
+                        <h3>Device Management</h3>
+                        <h5>Logged in as: {{ username }}</h5>
+                        
+                        <div class="alert alert-info">
+                            <strong>CSRF Protection:</strong> 
+                            {% if csrf_protection %}
+                                <span class="text-success">ENABLED</span>
+                            {% else %}
+                                <span class="text-danger">DISABLED</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Device</th>
+                                        <th>Employee</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for device in devices %}
+                                    <tr>
+                                        <td>
+                                            <small>{{ device[1] }}</small><br>
+                                            <small class="text-muted">{{ device[3] }}</small>
+                                        </td>
+                                        <td><small>{{ device[2] }}</small></td>
+                                        <td>
+                                            {% if device[4] == 'active' %}
+                                                <span class="badge badge-success">Active</span>
+                                            {% elif device[4] == 'wiped' %}
+                                                <span class="badge badge-danger">Wiped</span>
+                                            {% elif device[4] == 'locked' %}
+                                                <span class="badge badge-warning">Locked</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if device[4] == 'active' %}
+                                            <button onclick="deviceAction({{ device[0] }}, 'lock')" class="btn btn-warning btn-sm">Lock</button>
+                                            <button onclick="deviceAction({{ device[0] }}, 'wipe')" class="btn btn-danger btn-sm">Wipe</button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="/csrf/dashboard" class="btn btn-primary">← Back to Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function deviceAction(deviceId, action) {
+            const actionText = action === 'wipe' ? 'wipe' : 'lock';
+            if (confirm(`Are you sure you want to ${actionText} this device?`)) {
+                fetch('/csrf/wipe-device', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `device_id=${deviceId}&action=${action}{% if csrf_protection %}&csrf_token={{ session.csrf_token }}{% endif %}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(`Device ${actionText} completed!`);
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+            }
+        }
+    </script>
+
+    {% include 'b_loginfooter.html' %}
+</body>
+</html>

