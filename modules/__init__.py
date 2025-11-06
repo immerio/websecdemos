@@ -1,1 +1,1 @@
-from modules import brokenauth1, brokenauth2, brokenaccess, brokensession, inject, secmis, xss, paramtamp, pathtraversal, csrf, cors
+from modules import brokenauth1, brokenauth2, brokenaccess, brokensession, inject, secmis, xss, paramtamp, pathtraversal, csrf, cors, ssrf
