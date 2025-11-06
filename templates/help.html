@@ -65,7 +65,21 @@
                                         <tr>
                                             <th scope="row">Path Traversal</th>
                                             <td><a href="">Download /etc/passwd</td>
-                                        </tr>     
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Server-Side Request Forgery (SSRF)</th>
+                                            <td>
+                                                <strong>Login:</strong> user/user<br>
+                                                <strong>Demo URLs (safe, mocked responses):</strong><br>
+                                                • AWS Metadata: <code>http://169.254.169.254/latest/meta-data/</code><br>
+                                                • AWS Credentials: <code>http://169.254.169.254/latest/meta-data/iam/security-credentials/AdminRole</code><br>
+                                                • Internal Admin: <code>http://localhost/admin</code><br>
+                                                • Secret File: <code>http://localhost/secrets/coca_cola_recipe.txt</code><br>
+                                                • System File: <code>file:///etc/passwd</code><br>
+                                                • External Images: <code>http://evil.lab.zdt.se/[any-path]</code><br>
+                                                <small class="text-muted">The image will appear broken for non-image content. Check the Network tab to see the fetched data.</small>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <br>
