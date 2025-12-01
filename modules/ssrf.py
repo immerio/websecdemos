@@ -92,30 +92,32 @@ def pageSsrfUpload():
 
 def is_allowed_url(url):
 	"""Check if URL is allowed for real requests"""
+
+	# Check if begins with http:// or https://
+	if not (url.startswith("http://") or url.startswith("https://")):
+		return False
+	
 	# Allowed hosts
 	localhost_variants = [
-		'http://localhost',
-		'https://localhost',
-		'http://127.0.0.1',
-		'https://127.0.0.1',
-		'https://evil.lab.zdt.se/',
+		'localhost',
+		'127.0.0.1',
+		'evil.lab.zdt.se',
 	]
-	
-	url_lower = url.lower()
+
+	from urllib.parse import urlparse
+	parsed = urlparse(url.lower())
+	hostname = parsed.hostname
 	for variant in localhost_variants:
-		if url_lower.startswith(variant):
+		if hostname == variant:
 			return True
 	
 	# Allow oastify.com domains (for out-of-band testing)
 	# Extract hostname to check domain properly
-	from urllib.parse import urlparse
 	try:
-		parsed = urlparse(url_lower)
-		hostname = parsed.hostname or ''
 		if hostname.endswith('.oastify.com') or hostname == 'oastify.com':
 			return True
 	except:
-		pass
+		return False
 	
 	# Block everything else
 	return False
