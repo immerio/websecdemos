@@ -7,9 +7,6 @@ import os
 # Store images server-side with session ID as key
 ssrf_images = {}
 
-# SSRF-specific static files (only accessible via localhost)
-SSRF_STATIC_DIR = os.path.join(os.path.dirname(__file__), 'ssrf', 'static')
-
 app = Blueprint('ssrf',__name__)
 
 @app.route('/ssrf')
@@ -45,13 +42,22 @@ def pageSsrfProfile():
 	
 	return render_template('inside.html', admin=False, page='ssrf', ssrf_message=ssrf_message, ssrf_error=ssrf_error)
 
+#To make the demo a bit smoother, append the server port to localhost URLs
+#So that a SSRF payload to localhost works even if the server is on a non-standard port
+def append_server_port_if_localhost(img_url):
+	server_port = request.environ.get('SERVER_PORT')
+	img_url = img_url.replace("://localhost/", f"://localhost:{server_port}/")
+	
+	return img_url
+
 @app.route('/ssrf/profile/upload', methods=['POST'])
 def pageSsrfUpload():
 	if not session.get('ssrf_loggedin'):
 		return redirect('/ssrf', code=302)
 	
 	img_url = request.form.get('imageUrl')
-	
+	img_url = img_url.strip().lower()
+
 	#Fake that we're on AWS
 	img_url = img_url.replace("169.254.169.254","localhost")
 	
@@ -64,7 +70,9 @@ def pageSsrfUpload():
 		# This allows specific demo URLs to work while blocking real attacks
 
 		if is_allowed_url(img_url):
+			img_url = append_server_port_if_localhost(img_url)
 			# Handle HTTP/HTTPS URLs
+			print(f"SSRF url being called: {img_url}")
 			response = requests.get(img_url, timeout=5)
 			
 			if response.status_code == 200:
@@ -176,25 +184,25 @@ def localhost_only(f):
 @app.route('/admin')
 @localhost_only
 def pageAdmin():
-	return send_from_directory(SSRF_STATIC_DIR, 'admin.html')
+	return render_template('ssrf_admin.html')
 
-@app.route('/secrets/<path:filename>')
+@app.route('/secrets/coca_cola_recipe.txt')
 @localhost_only
-def pageSecrets(filename):
-	return send_from_directory(os.path.join(SSRF_STATIC_DIR, 'secrets'), filename)
+def pageSecrets():
+	return render_template('ssrf_secrets_coca_cola_recipe.txt'), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 # AWS Metadata simulation routes (localhost only)
 @app.route('/latest/meta-data/')
 @localhost_only
 def awsMetadata():
-	return send_from_directory(os.path.join(SSRF_STATIC_DIR, 'latest', 'meta-data'), 'index.txt', mimetype='text/plain')
+	return render_template('ssrf_latest_metadata_index.txt'), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 @app.route('/latest/meta-data/iam/security-credentials/')
 @localhost_only
 def awsSecurityCredentials():
-	return send_from_directory(os.path.join(SSRF_STATIC_DIR, 'latest', 'meta-data', 'iam', 'security-credentials'), 'index.txt', mimetype='text/plain')
+	return render_template('ssrf_latest_metadata_index_security-credentials_index.txt'), 200, {'Content-Type': 'text/plain; charset=utf-8'}
 
 @app.route('/latest/meta-data/iam/security-credentials/AdminRole')
 @localhost_only
 def awsAdminRole():
-	return send_from_directory(os.path.join(SSRF_STATIC_DIR, 'latest', 'meta-data', 'iam', 'security-credentials'), 'AdminRole', mimetype='application/json')
+	return render_template('ssrf_latest_metadata_AdminRole'), 200, {'Content-Type': 'application/json; charset=utf-8'}
