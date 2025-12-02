@@ -127,13 +127,36 @@ test_response.py::test_xss_admin_post PASSED
 test_response.py::test_xss_evillog PASSED
 ```
 
-## Additional Test Script
+## Additional Test Scripts
 
-Created `test_all_demos.py` - A comprehensive test script that:
+### 1. test_all_demos.py
+Basic connectivity test script that:
 - Tests all 12 vulnerability demonstrations
-- Validates both normal and vulnerable behavior
+- Validates that pages load correctly
 - Provides detailed output and summary
 - Can be run standalone: `python test_all_demos.py`
+
+### 2. test_exploits_e2e.py ⭐
+**END-TO-END EXPLOIT TEST SUITE** - This script ACTUALLY EXPLOITS each vulnerability:
+- Tests all 12 vulnerabilities with real attack payloads
+- Verifies that each exploit works end-to-end
+- Demonstrates actual security flaws in action
+- **Result: 12/12 vulnerabilities successfully exploited**
+- Can be run standalone: `python test_exploits_e2e.py`
+
+#### Exploits Verified:
+1. **Broken Access Control** - URL manipulation to access admin pages
+2. **Broken Authentication 1** - Bypass with credentials containing 'admin'
+3. **Broken Authentication 2** - Weak password exploitation
+4. **Broken Session Management** - Session fixation/manipulation
+5. **SQL Injection** - Authentication bypass with SQL payloads (e.g., `admin' OR '1'='1`)
+6. **Security Misconfiguration** - Direct admin panel access without auth
+7. **XSS** - Stored cross-site scripting via contact form
+8. **Parameter Tampering** - Privilege escalation via request manipulation
+9. **CSRF** - Unauthorized actions without token validation
+10. **CORS** - Sensitive data theft via misconfigured CORS headers
+11. **Path Traversal** - System file access via `../../etc/passwd`
+12. **SSRF** - Internal resource access via server-side requests
 
 ## Docker Setup (Note)
 
